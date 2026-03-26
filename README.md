@@ -1,38 +1,39 @@
 # symfony-ai-skills
 
-Symfony development skills for AI coding agents. One source of truth, multiple agents supported.
+A foundational set of Symfony best practices for AI coding agents.
 
-## What's inside
+## Philosophy
 
-12 skills covering the full Symfony development workflow:
+This project provides a **minimal, opinionated base** that teaches AI coding agents how to write Symfony code the way the official documentation recommends it. No magic, no shortcuts — just the practices that every Symfony project should follow.
 
-| Skill | Description |
+The goal is not to cover every edge case or every bundle. It's to establish a **common foundation** so that when an AI agent generates Symfony code, it produces code that any Symfony developer would recognize as idiomatic:
+
+- PHP 8 attributes everywhere (`#[Route]`, `#[ORM\Column]`, `#[AsCommand]`, etc.) — never annotations, never YAML for things that belong in code
+- Symfony CLI as the default entry point when available (`symfony console`, `symfony composer`)
+- Constructor injection, autowiring, `final readonly` services
+- Doctrine best practices (immutable dates, fluent setters, always a repository)
+- Proper test hierarchy (unit / functional / integration with the right base class)
+
+## Skills
+
+| Skill | What it teaches |
 |---|---|
-| **cli-conventions** | Auto-prefix commands with Symfony CLI (`symfony console`, `symfony composer`, etc.) |
-| **init** | Scaffold a new project (`--webapp`, `--api`, `--docker`) |
-| **controller** | Create controllers with routes, CRUD, or API style |
-| **entity** | Create Doctrine entities with relationships and repositories |
-| **form** | Create FormType classes bound to entities |
-| **command** | Create console commands with `#[AsCommand]` |
-| **service** | Create services with DI, optionally with interface |
-| **test** | Generate unit, functional, or integration tests |
-| **migration** | Manage Doctrine migrations (diff, migrate, rollback) |
-| **voter** | Create security voters for fine-grained authorization |
-| **event** | Create events with listeners or subscribers |
-| **api** | Configure API Platform resources with filters and serialization groups |
+| **cli-conventions** | Always prefer `symfony console` over `php bin/console`, detect Symfony CLI availability |
+| **init** | Scaffold projects with `symfony new` and the right flags |
+| **controller** | Routes as attributes, CRUD structure, proper type hints |
+| **entity** | Doctrine mappings, relationships, lifecycle callbacks |
+| **form** | FormType bound to entities, field type mapping, validation on entities |
+| **command** | `#[AsCommand]`, SymfonyStyle, proper return codes |
+| **service** | `final readonly`, constructor injection, interface binding |
+| **test** | WebTestCase vs KernelTestCase vs TestCase, `#[DataProvider]` |
+| **migration** | `diff` over `generate`, review before migrate, never edit executed migrations |
+| **voter** | Permission constants, `supports()` + `voteOnAttribute()` pattern |
+| **event** | `#[AsEventListener]` over subscribers, past-tense naming |
+| **api** | API Platform attributes, serialization groups, filters |
 
-## Supported agents
+## Install
 
-| Agent | Install method | Skill format |
-|---|---|---|
-| [Claude Code](https://claude.ai/code) | Plugin with namespaced skills (`/symfony:controller`) | Individual SKILL.md per skill |
-| [OpenCode](https://github.com/opencode-ai/opencode) | Skill with references | SKILL.md + references/ |
-| [Codex](https://github.com/openai/codex) | AGENTS.md | Single concatenated file |
-| [Cursor](https://cursor.sh) | .cursorrules | Single concatenated file |
-| [Windsurf](https://windsurf.com) | .windsurfrules | Single concatenated file |
-| Any other | Generic markdown | Single concatenated file |
-
-## Quick install
+The skill content is **pure markdown** — agent-agnostic. An install script generates the native format for your agent of choice.
 
 ```bash
 git clone https://github.com/your-username/symfony-ai-skills.git
@@ -40,109 +41,49 @@ cd symfony-ai-skills
 ./install.sh <agent>
 ```
 
-See detailed instructions per agent below, or in the [docs/](docs/) folder.
+### Supported agents
 
-### Claude Code
+| Agent | Command | Result |
+|---|---|---|
+| [Claude Code](https://claude.ai/code) | `./install.sh claude-code` | Plugin with `/symfony:*` skills |
+| [OpenCode](https://github.com/opencode-ai/opencode) | `./install.sh opencode` | Skill with references |
+| [Codex](https://github.com/openai/codex) | `./install.sh codex --output .` | `AGENTS.md` |
+| [Cursor](https://cursor.sh) | `./install.sh cursor --output .` | `.cursorrules` |
+| [Windsurf](https://windsurf.com) | `./install.sh windsurf --output .` | `.windsurfrules` |
+| Any other | `./install.sh generic --output .` | `symfony-skills.md` |
 
-```bash
-./install.sh claude-code
-```
+See [docs/](docs/) for detailed per-agent instructions.
 
-This creates a plugin at `~/.claude/skills/symfony/` (symlinked to `dist/claude-code/`).
-
-Then add to your `~/.claude/settings.json`:
-
-```json
-{
-  "enabledPlugins": {
-    "/Users/<you>/.claude/skills/symfony": true
-  }
-}
-```
-
-Restart Claude Code. Skills are available as `/symfony:init`, `/symfony:controller`, etc.
-
-For project-level install:
-
-```bash
-./install.sh claude-code --project
-```
-
-### OpenCode
-
-```bash
-./install.sh opencode
-```
-
-This creates a skill at `~/.agents/skills/symfony/` (symlinked to `dist/opencode/`).
-
-Restart OpenCode. The `symfony` skill will be available automatically.
-
-### Codex (OpenAI)
-
-```bash
-./install.sh codex --output /path/to/your/project
-```
-
-This generates an `AGENTS.md` file in your project root.
-
-### Cursor
-
-```bash
-./install.sh cursor --output /path/to/your/project
-```
-
-This generates a `.cursorrules` file in your project root.
-
-### Windsurf
-
-```bash
-./install.sh windsurf --output /path/to/your/project
-```
-
-This generates a `.windsurfrules` file in your project root.
-
-### Generic / Other agents
-
-```bash
-./install.sh generic --output /path/to/your/project
-```
-
-This generates a `symfony-skills.md` file you can include in any agent's context.
-
-## Options
+### Options
 
 | Flag | Description |
 |---|---|
-| `--project` | Install into current project instead of global (Claude Code, OpenCode) |
+| `--project` | Install into the current project instead of globally (Claude Code, OpenCode) |
 | `--output <dir>` | Output directory for generated files (Codex, Cursor, Windsurf, generic) |
-| `--dry-run` | Preview what would happen without making changes |
+| `--dry-run` | Preview what would be done without making changes |
 
-## Architecture
+## Project structure
 
 ```
-symfony-ai-skills/
-├── skills/                     # Universal source of truth
-│   ├── _metadata.yaml          # Skill metadata (name, description, args)
-│   ├── cli-conventions.md      # Pure markdown — no agent-specific markup
-│   ├── init.md
-│   ├── controller.md
-│   └── ...
-├── install.sh                  # Multi-agent installer
-├── dist/                       # Generated (gitignored)
-│   ├── claude-code/            # Claude Code plugin
-│   └── opencode/               # OpenCode skill
-└── docs/                       # Per-agent detailed docs
+skills/                     # Source of truth — pure markdown, no agent-specific markup
+  _metadata.yaml            # Metadata per skill (name, description, args hint)
+  cli-conventions.md
+  init.md
+  controller.md
+  ...
+install.sh                  # Reads skills/ + _metadata.yaml, generates native format
+dist/                       # Generated output (gitignored)
+docs/                       # Per-agent installation guides
 ```
-
-The `skills/` directory contains **pure markdown** — the knowledge itself, with no agent-specific frontmatter or markup. The `install.sh` script reads `_metadata.yaml` for skill metadata and generates the appropriate format for each agent.
 
 ## Contributing
 
-1. Edit files in `skills/` (the source of truth)
-2. Update `_metadata.yaml` if adding/removing skills
-3. Run `./install.sh <agent>` to regenerate
-4. Test with your agent
+1. Edit files in `skills/` — that's the single source of truth
+2. Update `_metadata.yaml` if adding or removing a skill
+3. Run `./install.sh <agent>` to regenerate and test
+4. Open a PR
+
+All conventions should be traceable to the [official Symfony documentation](https://symfony.com/doc/current/index.html). If a practice isn't in the docs, it probably shouldn't be here.
 
 ## License
 
