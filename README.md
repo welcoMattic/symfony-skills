@@ -1,4 +1,4 @@
-# symfony-ai-skills
+# AI Coding Agent Skills for Symfony
 
 A foundational set of Symfony best practices for AI coding agents.
 
@@ -61,12 +61,29 @@ cd symfony-ai-skills
 | [Windsurf](https://windsurf.com) | `./install.sh windsurf --output .` | `.windsurfrules` |
 | Any other | `./install.sh generic --output .` | `symfony-skills.md` |
 
+### Symfony version support
+
+Skills adapt to your Symfony version. By default, the latest stable (8.0) is used.
+
+```bash
+./install.sh claude-code --version 6.4    # Symfony 6.4 LTS
+./install.sh cursor --output . --version 5.4  # Symfony 5.4
+```
+
+| Version | Status | Key differences |
+|---|---|---|
+| **8.0** | Latest stable (default) | PHP 8.4, attributes, AssetMapper, `readonly class` |
+| **7.4** | LTS | PHP 8.2, same practices as 8.0 |
+| **6.4** | LTS | PHP 8.1, `readonly` properties only (not class) |
+| **5.4** | Security only | PHP 7.2+, annotations, Webpack Encore, ParamConverter, `configure()`, no `readonly` |
+
 See [docs/](docs/) for detailed per-agent instructions.
 
 ### Options
 
 | Flag | Description |
 |---|---|
+| `--version <X.Y>` | Symfony version: `5.4`, `6.4`, `7.4`, `8.0` (default: latest) |
 | `--project` | Install into the current project instead of globally (Claude Code, OpenCode) |
 | `--output <dir>` | Output directory for generated files (Codex, Cursor, Windsurf, generic) |
 | `--dry-run` | Preview what would be done without making changes |
@@ -74,16 +91,26 @@ See [docs/](docs/) for detailed per-agent instructions.
 ## Project structure
 
 ```
-skills/                     # Source of truth — pure markdown, no agent-specific markup
+skills/                     # Source of truth for latest version — pure markdown
   _metadata.yaml            # Metadata per skill (name, description, args hint)
   cli-conventions.md
   init.md
   controller.md
   ...
-install.sh                  # Reads skills/ + _metadata.yaml, generates native format
+versions/                   # Version-specific overrides (only files that differ)
+  5.4/
+    controller.md           # Annotations instead of attributes
+    entity.md               # @ORM annotations
+    ...
+  6.4/
+    service.md              # readonly properties, not class
+  7.4/                      # Empty — same as 8.0
+install.sh                  # Reads skills/ + versions/ + _metadata.yaml
 dist/                       # Generated output (gitignored)
 docs/                       # Per-agent installation guides
 ```
+
+The install script resolves each skill by checking `versions/<X.Y>/<skill>.md` first, then falling back to `skills/<skill>.md`.
 
 ## Contributing
 
