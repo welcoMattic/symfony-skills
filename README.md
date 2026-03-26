@@ -42,12 +42,23 @@ The goal is not to cover every edge case or every bundle. It's to establish a **
 
 ## Install
 
-The skill content is **pure markdown** — agent-agnostic. An install script generates the native format for your agent of choice.
+The skill content is **pure markdown** — agent-agnostic. An installer generates the native format for your agent of choice.
 
 ```bash
 git clone https://github.com/welcoMattic/symfony-skills.git
 cd symfony-skills
+```
+
+Two installers are provided — pick whichever fits your setup:
+
+**Bash** (no dependencies):
+```bash
 ./install.sh <agent>
+```
+
+**[Castor](https://castor.jolicode.com/)** (PHP 8.2+):
+```bash
+castor install <agent>
 ```
 
 ### Supported agents
@@ -67,8 +78,8 @@ cd symfony-skills
 Skills adapt to your Symfony version. By default, the latest stable (8.0) is used.
 
 ```bash
-./install.sh claude-code --version 6.4    # Symfony 6.4 LTS
-./install.sh cursor --output . --version 7.4  # Symfony 7.4 LTS
+./install.sh claude-code --version 6.4          # Bash
+castor install claude-code --symfony=6.4        # Castor
 ```
 
 | Version | Status                  | Key differences                                 |
@@ -81,12 +92,12 @@ See [docs/](docs/) for detailed per-agent instructions.
 
 ### Options
 
-| Flag              | Description                                                                  |
-|-------------------|------------------------------------------------------------------------------|
-| `--version <X.Y>` | Symfony version: `6.4`, `7.4`, `8.0` (default: latest)                       |
-| `--project`       | Install into the current project instead of globally (Claude Code, OpenCode) |
-| `--output <dir>`  | Output directory for generated files (Codex, Cursor, Windsurf, generic)      |
-| `--dry-run`       | Preview what would be done without making changes                            |
+| Bash              | Castor              | Description                                                             |
+|-------------------|----------------------|-------------------------------------------------------------------------|
+| `--version <X.Y>` | `--symfony=<X.Y>`   | Symfony version: `6.4`, `7.4`, `8.0` (default: latest)                 |
+| `--project`       | `--project`          | Install into the current project instead of globally                    |
+| `--output <dir>`  | `--output=<dir>`     | Output directory for generated files (Codex, Cursor, Windsurf, generic) |
+| `--dry-run`       | `--dry-run`          | Preview what would be done without making changes                       |
 
 ## Project structure
 
@@ -101,7 +112,8 @@ versions/                   # Version-specific overrides (only files that differ
   6.4/
     service.md              # readonly properties, not class
   7.4/                      # Empty — same as 8.0
-install.sh                  # Reads skills/ + versions/ + _metadata.yaml
+install.sh                  # Bash installer (no dependencies)
+castor.php                  # Castor installer (PHP 8.2+)
 dist/                       # Generated output (gitignored)
 docs/                       # Per-agent installation guides
 ```
