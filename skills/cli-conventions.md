@@ -12,12 +12,12 @@ A Symfony project is detected when any of the following exist in the working dir
 
 When the Symfony CLI (`symfony`) is available on the system, **always** use it as a prefix instead of calling tools directly:
 
-| Instead of | Use |
-|---|---|
-| `php bin/console <cmd>` | `symfony console <cmd>` |
-| `composer <cmd>` | `symfony composer <cmd>` |
-| `php -S localhost:8000` | `symfony server:start` |
-| `php bin/phpunit` | `symfony php bin/phpunit` |
+| Instead of              | Use                       |
+|-------------------------|---------------------------|
+| `php bin/console <cmd>` | `symfony console <cmd>`   |
+| `composer <cmd>`        | `symfony composer <cmd>`  |
+| `php -S localhost:8000` | `symfony server:start`    |
+| `php bin/phpunit`       | `symfony php bin/phpunit` |
 
 ### Why?
 

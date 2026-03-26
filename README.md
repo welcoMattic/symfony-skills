@@ -18,27 +18,27 @@ The goal is not to cover every edge case or every bundle. It's to establish a **
 
 ### Background knowledge (applied automatically)
 
-| Skill | What it teaches |
-|---|---|
+| Skill               | What it teaches                                                                         |
+|---------------------|-----------------------------------------------------------------------------------------|
 | **cli-conventions** | Always prefer `symfony console` over `php bin/console`, detect Symfony CLI availability |
-| **configuration** | When to use env vars vs parameters vs constants vs secrets, `app.` prefix convention |
-| **templates** | Snake_case naming, underscore-prefixed fragments, AssetMapper over Webpack |
+| **configuration**   | When to use env vars vs parameters vs constants vs secrets, `app.` prefix convention    |
+| **templates**       | Snake_case naming, underscore-prefixed fragments, AssetMapper over Webpack              |
 
 ### Code generation (invocable)
 
-| Skill | What it teaches |
-|---|---|
-| **init** | Scaffold projects with `symfony new`, default directory structure, no bundles for app logic |
-| **controller** | Extend `AbstractController`, attributes for routing/security/caching, Entity Value Resolver |
-| **entity** | Attributes for Doctrine mapping, class constants for domain values, validation constraints on entities |
-| **form** | FormType as PHP classes, buttons in templates not form classes, single action for render + process |
-| **command** | `#[AsCommand]`, SymfonyStyle, proper return codes |
-| **service** | `final readonly`, autowiring, private services, no bundles, constructor injection |
-| **test** | Smoke testing all URLs, hard-coded URLs, right base class per test type |
-| **migration** | `diff` over `generate`, review before migrate, never edit executed migrations |
-| **voter** | Single firewall, `auto` password hasher, Voters over complex `#[IsGranted]` expressions |
-| **event** | `#[AsEventListener]` over subscribers, past-tense naming |
-| **api** | API Platform attributes, serialization groups, filters |
+| Skill          | What it teaches                                                                                        |
+|----------------|--------------------------------------------------------------------------------------------------------|
+| **init**       | Scaffold projects with `symfony new`, default directory structure, no bundles for app logic            |
+| **controller** | Extend `AbstractController`, attributes for routing/security/caching, Entity Value Resolver            |
+| **entity**     | Attributes for Doctrine mapping, class constants for domain values, validation constraints on entities |
+| **form**       | FormType as PHP classes, buttons in templates not form classes, single action for render + process     |
+| **command**    | `#[AsCommand]`, SymfonyStyle, proper return codes                                                      |
+| **service**    | `final readonly`, autowiring, private services, no bundles, constructor injection                      |
+| **test**       | Smoke testing all URLs, hard-coded URLs, right base class per test type                                |
+| **migration**  | `diff` over `generate`, review before migrate, never edit executed migrations                          |
+| **voter**      | Single firewall, `auto` password hasher, Voters over complex `#[IsGranted]` expressions                |
+| **event**      | `#[AsEventListener]` over subscribers, past-tense naming                                               |
+| **api**        | API Platform attributes, serialization groups, filters                                                 |
 
 ## Install
 
@@ -52,14 +52,14 @@ cd symfony-ai-skills
 
 ### Supported agents
 
-| Agent | Command | Result |
-|---|---|---|
-| [Claude Code](https://claude.ai/code) | `./install.sh claude-code` | Plugin with `/symfony:*` skills |
-| [OpenCode](https://github.com/opencode-ai/opencode) | `./install.sh opencode` | Skill with references |
-| [Codex](https://github.com/openai/codex) | `./install.sh codex --output .` | `AGENTS.md` |
-| [Cursor](https://cursor.sh) | `./install.sh cursor --output .` | `.cursorrules` |
-| [Windsurf](https://windsurf.com) | `./install.sh windsurf --output .` | `.windsurfrules` |
-| Any other | `./install.sh generic --output .` | `symfony-skills.md` |
+| Agent                                               | Command                            | Result                          |
+|-----------------------------------------------------|------------------------------------|---------------------------------|
+| [Claude Code](https://claude.ai/code)               | `./install.sh claude-code`         | Plugin with `/symfony:*` skills |
+| [OpenCode](https://github.com/opencode-ai/opencode) | `./install.sh opencode`            | Skill with references           |
+| [Codex](https://github.com/openai/codex)            | `./install.sh codex --output .`    | `AGENTS.md`                     |
+| [Cursor](https://cursor.sh)                         | `./install.sh cursor --output .`   | `.cursorrules`                  |
+| [Windsurf](https://windsurf.com)                    | `./install.sh windsurf --output .` | `.windsurfrules`                |
+| Any other                                           | `./install.sh generic --output .`  | `symfony-skills.md`             |
 
 ### Symfony version support
 
@@ -70,23 +70,23 @@ Skills adapt to your Symfony version. By default, the latest stable (8.0) is use
 ./install.sh cursor --output . --version 5.4  # Symfony 5.4
 ```
 
-| Version | Status | Key differences |
-|---|---|---|
-| **8.0** | Latest stable (default) | PHP 8.4, attributes, AssetMapper, `readonly class` |
-| **7.4** | LTS | PHP 8.2, same practices as 8.0 |
-| **6.4** | LTS | PHP 8.1, `readonly` properties only (not class) |
-| **5.4** | Security only | PHP 7.2+, annotations, Webpack Encore, ParamConverter, `configure()`, no `readonly` |
+| Version | Status                  | Key differences                                                                     |
+|---------|-------------------------|-------------------------------------------------------------------------------------|
+| **8.0** | Latest stable (default) | PHP 8.4, attributes, AssetMapper, `readonly class`                                  |
+| **7.4** | LTS                     | PHP 8.2, same practices as 8.0                                                      |
+| **6.4** | LTS                     | PHP 8.1, `readonly` properties only (not class)                                     |
+| **5.4** | Security only           | PHP 7.2+, annotations, Webpack Encore, ParamConverter, `configure()`, no `readonly` |
 
 See [docs/](docs/) for detailed per-agent instructions.
 
 ### Options
 
-| Flag | Description |
-|---|---|
-| `--version <X.Y>` | Symfony version: `5.4`, `6.4`, `7.4`, `8.0` (default: latest) |
-| `--project` | Install into the current project instead of globally (Claude Code, OpenCode) |
-| `--output <dir>` | Output directory for generated files (Codex, Cursor, Windsurf, generic) |
-| `--dry-run` | Preview what would be done without making changes |
+| Flag              | Description                                                                  |
+|-------------------|------------------------------------------------------------------------------|
+| `--version <X.Y>` | Symfony version: `5.4`, `6.4`, `7.4`, `8.0` (default: latest)                |
+| `--project`       | Install into the current project instead of globally (Claude Code, OpenCode) |
+| `--output <dir>`  | Output directory for generated files (Codex, Cursor, Windsurf, generic)      |
+| `--dry-run`       | Preview what would be done without making changes                            |
 
 ## Project structure
 
