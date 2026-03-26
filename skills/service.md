@@ -26,6 +26,8 @@ Generate a service class following Symfony conventions with autowiring.
 
 namespace App\Service;
 
+use Doctrine\ORM\EntityManagerInterface;
+
 final readonly class InvoiceGenerator
 {
     public function __construct(
@@ -65,8 +67,7 @@ Then add the binding in `config/services.yaml`:
 
 ```yaml
 services:
-    App\Service\InvoiceGeneratorInterface:
-        alias: App\Service\InvoiceGenerator
+    App\Service\InvoiceGeneratorInterface: '@App\Service\InvoiceGenerator'
 ```
 
 ## Common Injected Services

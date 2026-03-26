@@ -29,8 +29,8 @@ Generate a security voter for fine-grained access control.
 namespace App\Security\Voter;
 
 use App\Entity\Product;
-use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
+use Symfony\Component\Security\Core\Authorization\AccessDecisionManagerInterface;
 use Symfony\Component\Security\Core\Authorization\Voter\Voter;
 use Symfony\Component\Security\Core\User\UserInterface;
 
@@ -41,7 +41,7 @@ class ProductVoter extends Voter
     public const DELETE = 'PRODUCT_DELETE';
 
     public function __construct(
-        private Security $security,
+        private AccessDecisionManagerInterface $accessDecisionManager,
     ) {
     }
 
@@ -59,7 +59,7 @@ class ProductVoter extends Voter
             return false;
         }
 
-        if ($this->security->isGranted('ROLE_ADMIN')) {
+        if ($this->accessDecisionManager->decide($token, ['ROLE_ADMIN'])) {
             return true;
         }
 

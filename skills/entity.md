@@ -20,7 +20,7 @@ Generate an entity class with its repository following Symfony & Doctrine conven
 | `date` | `date_immutable` | `\DateTimeImmutable` |
 | `datetime` | `datetime_immutable` | `\DateTimeImmutable` |
 | `json` | `json` | `array` |
-| `uuid` | `uuid` (doctrine/uid) | `Uuid` |
+| `uuid` | `uuid` (symfony/uid) | `Uuid` |
 
 ## Relationships
 
@@ -53,19 +53,20 @@ namespace App\Entity;
 
 use App\Repository\ProductRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: ProductRepository::class)]
 class Product
 {
-    #[ORM\Id]
-    #[ORM\GeneratedValue]
-    #[ORM\Column]
-    private ?int $id = null;
-
     // Constants for domain values that rarely change
     public const STATUS_DRAFT = 'draft';
     public const STATUS_PUBLISHED = 'published';
     public const NUM_ITEMS_PER_PAGE = 10;
+
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column]
+    private ?int $id = null;
 
     #[ORM\Column(length: 255)]
     #[Assert\NotBlank]

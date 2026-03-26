@@ -56,7 +56,7 @@ public function show(Product $product): Response
 
 For `--crud`, generate all 5 actions:
 - `index` — `GET /` — list all
-- `show` — `GET /{id}` — show one (use entity type-hint for param converter)
+- `show` — `GET /{id}` — show one (use entity type-hint for Entity Value Resolver)
 - `new` — `GET|POST /new` — create form
 - `edit` — `GET|POST /{id}/edit` — edit form
 - `delete` — `POST /{id}/delete` — delete with CSRF token check

@@ -10,11 +10,11 @@ Generate an event class and its listener or subscriber.
 
 ## Conventions
 
-- **Events:** `src/Event/` — simple DTO classes extending nothing (Symfony 6+)
+- **Events:** `src/Event/` — extend `Symfony\Contracts\EventDispatcher\Event`
 - **Listeners:** `src/EventListener/` — use `#[AsEventListener]` attribute
 - **Subscribers:** `src/EventSubscriber/` — implement `EventSubscriberInterface`
 - **Naming:** Past tense for events (`OrderPlaced`, not `PlaceOrder`)
-- **Prefer listeners** with the `#[AsEventListener]` attribute over subscribers for simplicity (Symfony recommendation since 6.2+)
+- **Listeners vs subscribers** — both are valid, the choice is a matter of personal taste. Listeners with `#[AsEventListener]` are simpler for single-event handling; subscribers are easier to reuse when listening to multiple events
 
 ## Template: Event
 
@@ -23,7 +23,9 @@ Generate an event class and its listener or subscriber.
 
 namespace App\Event;
 
-class OrderPlacedEvent
+use Symfony\Contracts\EventDispatcher\Event;
+
+class OrderPlacedEvent extends Event
 {
     public function __construct(
         public readonly Order $order,

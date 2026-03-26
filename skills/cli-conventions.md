@@ -49,9 +49,9 @@ symfony server:log          # Tail logs
 ## Useful Symfony CLI Commands
 
 ```bash
-symfony local:check:requirements   # Check PHP & extension requirements
+symfony check:requirements         # Check PHP & extension requirements
 symfony local:php:list             # List available PHP versions
-symfony local:proxy:start          # Start local proxy for multiple projects
-symfony var:export                 # Show env vars injected by Symfony CLI
-symfony security:check             # Check for known vulnerabilities
+symfony proxy:start                # Start local proxy for multiple projects
+symfony var:export --debug         # Show env vars injected by Symfony CLI
+symfony check:security             # Check for known vulnerabilities
 ```

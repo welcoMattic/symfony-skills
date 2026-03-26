@@ -12,9 +12,9 @@ Generate a console command following Symfony conventions.
 - **Location:** `src/Command/`
 - **Naming:** Convert command name to PascalCase + `Command` suffix (e.g. `app:import-users` → `ImportUsersCommand`)
 - **Attribute:** Use `#[AsCommand]` attribute (not `configure()` for name/description)
+- **Invokable commands:** Use `__invoke()` as the entry point — this is the modern pattern. The class does not need to extend `Command`. `SymfonyStyle` and other services can be injected directly as parameters
 - **Return codes:** Always use `Command::SUCCESS`, `Command::FAILURE`, `Command::INVALID`
-- **I/O:** Use `SymfonyStyle` for consistent output formatting
-- **Services:** Inject dependencies via constructor (auto-wired)
+- **Services:** Inject dependencies via `__invoke()` parameters or constructor (auto-wired)
 
 ## Template
 
@@ -24,10 +24,10 @@ Generate a console command following Symfony conventions.
 namespace App\Command;
 
 use Symfony\Component\Console\Attribute\AsCommand;
+use Symfony\Component\Console\Attribute\Argument;
+use Symfony\Component\Console\Attribute\Option;
 use Symfony\Component\Console\Command\Command;
-use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 
@@ -35,23 +35,13 @@ use Symfony\Component\Console\Style\SymfonyStyle;
     name: 'app:command-name',
     description: 'Short description of the command',
 )]
-class CommandNameCommand extends Command
+class CommandNameCommand
 {
-    public function __construct()
-    {
-        parent::__construct();
-    }
-
-    protected function configure(): void
-    {
-        $this
-            ->addArgument('arg1', InputArgument::REQUIRED, 'Argument description')
-            ->addOption('option1', null, InputOption::VALUE_NONE, 'Option description')
-        ;
-    }
-
-    protected function execute(InputInterface $input, OutputInterface $output): int
-    {
+    public function __invoke(
+        #[Argument('Argument description')] string $arg1,
+        InputInterface $input,
+        OutputInterface $output,
+    ): int {
         $io = new SymfonyStyle($input, $output);
 
         // Command logic here
