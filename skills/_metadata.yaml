@@ -1,9 +1,14 @@
 ## Metadata for each skill — used by install.sh to generate agent-specific formats
+##
 ## Fields:
 ##   name:        Skill identifier (kebab-case)
 ##   description: When/why to use this skill (used for auto-invocation)
-##   args:        Argument hint for user-facing skills
+##   args:        Argument hint for user-facing skills (skill parameters, not CLI flags)
 ##   auto:        true = background knowledge, not user-invocable (default: false)
+##
+## MakerBundle equivalents are noted where they exist. These skills generate code
+## directly — they do NOT run make: commands (which are interactive). The skill
+## follows the same conventions MakerBundle would produce.
 
 skills:
   cli-conventions:
@@ -30,73 +35,80 @@ skills:
   init:
     name: init
     description: >
-      Initialize a new Symfony project using the Symfony CLI. Supports webapp, API,
-      microservice, and Docker presets.
-    args: "[project-name] [--webapp|--api|--microservice] [--docker] [--php=version]"
+      Initialize a new Symfony project using the Symfony CLI.
+      Runs: symfony new <name> [flags]
+    args: "[project-name] [--webapp] [--api] [--docker] [--php=version] [--version=version]"
 
   controller:
     name: controller
     description: >
-      Create a Symfony controller with routes, actions, and proper structure.
-      Follows Symfony best practices with PHP 8 attributes for routing.
-    args: "[ControllerName] [--crud] [--api]"
+      Create a Symfony controller with routes and actions.
+      MakerBundle equivalent: make:controller (single controller), make:crud (CRUD).
+    args: "[ControllerName]"
 
   entity:
     name: entity
     description: >
       Create a Doctrine ORM entity with properties, relationships, and repository.
-      Follows Symfony and Doctrine best practices with PHP 8 attributes.
-    args: "[EntityName] [field:type ...] [--api]"
+      MakerBundle equivalent: make:entity (supports --api-resource flag for API Platform).
+    args: "[EntityName] [field:type ...]"
 
   form:
     name: form
     description: >
       Create a Symfony FormType class for an entity or a standalone form.
-      Handles field types, validation constraints, and form options.
+      MakerBundle equivalent: make:form.
     args: "[EntityName|FormName]"
 
   command:
     name: command
     description: >
-      Create a Symfony Console command with arguments, options, and proper structure.
-    args: "[command:name] [description]"
+      Create an invokable Symfony Console command with #[AsCommand], #[Argument], #[Option].
+      MakerBundle equivalent: make:command.
+    args: "[command:name]"
 
   service:
     name: service
     description: >
-      Create a Symfony service class with dependency injection, interface, and proper structure.
-    args: "[ServiceName] [--interface]"
+      Create a Symfony service class with dependency injection and proper structure.
+      No MakerBundle equivalent — services are plain PHP classes, no scaffolding needed.
+    args: "[ServiceName]"
 
   test:
     name: test
     description: >
       Generate PHPUnit tests for Symfony components — unit, functional (WebTestCase),
       or integration tests. Detects the target class and generates appropriate test type.
+      MakerBundle equivalents: make:test, make:unit-test, make:functional-test.
     args: "[ClassName] [--unit|--functional|--integration]"
 
   migration:
     name: migration
     description: >
       Manage Doctrine migrations — generate, run, diff, rollback.
-      Provides guidance on safe migration practices.
+      Commands: doctrine:migrations:diff, doctrine:migrations:migrate, etc.
+      MakerBundle equivalent: make:migration (wraps doctrine:migrations:diff).
     args: "[generate|migrate|rollback|status|diff]"
 
   voter:
     name: voter
     description: >
       Create a Symfony Security Voter for fine-grained authorization logic.
-    args: "[EntityName] [permissions...]"
+      MakerBundle equivalent: make:voter.
+    args: "[EntityName]"
 
   event:
     name: event
     description: >
-      Create a Symfony Event and its EventListener or EventSubscriber.
-      Use for decoupling application logic via the EventDispatcher.
-    args: "[EventName] [--listener|--subscriber]"
+      Create a Symfony Event class and its EventListener or EventSubscriber.
+      MakerBundle equivalent: make:listener (also aliased as make:subscriber).
+    args: "[EventName]"
 
   api:
     name: api
     description: >
-      Create or configure an API Platform resource — expose an entity as a REST/GraphQL API
-      with operations, filters, pagination, and serialization groups.
-    args: "[EntityName] [--graphql] [--filters]"
+      Configure an API Platform resource on an existing Doctrine entity — add
+      #[ApiResource], operations, serialization groups, and filters.
+      No dedicated MakerBundle command — use make:entity --api-resource to scaffold,
+      or add attributes manually to an existing entity.
+    args: "[EntityName]"
