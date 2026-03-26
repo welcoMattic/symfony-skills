@@ -1,6 +1,43 @@
 # Initialize a New Symfony Project
 
-Create a new Symfony project using the Symfony CLI.
+Create a new Symfony project using the Symfony CLI. Always use the `symfony` binary — it's the recommended way to create new applications.
+
+## Default Directory Structure
+
+Follow the default Symfony directory structure. It's flat, self-explanatory, and not coupled to Symfony:
+
+```
+your_project/
+├─ assets/
+├─ bin/console
+├─ config/
+│  ├─ packages/
+│  ├─ routes/
+│  └─ services.yaml
+├─ migrations/
+├─ public/
+│  └─ index.php
+├─ src/
+│  ├─ Kernel.php
+│  ├─ Command/
+│  ├─ Controller/
+│  ├─ DataFixtures/
+│  ├─ Entity/
+│  ├─ EventSubscriber/
+│  ├─ Form/
+│  ├─ Repository/
+│  ├─ Security/
+│  └─ Twig/
+├─ templates/
+├─ tests/
+├─ translations/
+├─ var/
+│  ├─ cache/
+│  └─ log/
+└─ vendor/
+```
+
+Do not create bundles to organize application logic (no `UserBundle`, `ProductBundle`, etc.). Use PHP namespaces instead.
 
 ## Arguments
 

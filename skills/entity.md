@@ -35,12 +35,14 @@ Always set the `inversedBy` / `mappedBy` sides properly.
 
 - **Location:** `src/Entity/`
 - **Repository:** `src/Repository/<Name>Repository.php` — always generate the matching repository
-- **Attributes:** Use PHP 8 attributes (`#[ORM\Entity]`, `#[ORM\Column]`), never annotations
+- **Attributes only** — use PHP 8 attributes (`#[ORM\Entity]`, `#[ORM\Column]`) for all Doctrine mapping. Never annotations, never YAML, never XML. Attributes are the most convenient and agile way to set up mapping
 - **ID:** Use auto-increment `id` as primary key by default. Use UUID if the user specifies or for API projects
+- **Constants for domain values** — define options that rarely change as class constants. They can be used everywhere (Twig, controllers, other entities), unlike container parameters
 - **Timestamps:** If the user mentions timestamps or dates, add `createdAt` and `updatedAt` with `#[ORM\HasLifecycleCallbacks]` and `#[ORM\PrePersist]` / `#[ORM\PreUpdate]`
 - **Nullable:** Fields are NOT nullable by default. Only set nullable if explicitly requested
 - **Immutable dates:** Always prefer `\DateTimeImmutable` over `\DateTime`
 - **Getters/setters:** Generate fluent setters (return `$this`)
+- **Validation constraints on the entity** — always add `#[Assert\...]` attributes directly on properties. This way constraints are enforced everywhere the entity is used (forms, API, manual validation)
 
 ## Template: Entity
 
@@ -60,7 +62,13 @@ class Product
     #[ORM\Column]
     private ?int $id = null;
 
+    // Constants for domain values that rarely change
+    public const STATUS_DRAFT = 'draft';
+    public const STATUS_PUBLISHED = 'published';
+    public const NUM_ITEMS_PER_PAGE = 10;
+
     #[ORM\Column(length: 255)]
+    #[Assert\NotBlank]
     private ?string $name = null;
 
     public function getId(): ?int

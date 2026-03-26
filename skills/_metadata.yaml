@@ -13,6 +13,20 @@ skills:
       always use the Symfony CLI binary as prefix for all relevant commands.
     auto: true
 
+  configuration:
+    name: configuration
+    description: >
+      Background knowledge for Symfony configuration conventions. Teaches when to use
+      environment variables, parameters, constants, and secrets.
+    auto: true
+
+  templates:
+    name: templates
+    description: >
+      Background knowledge for Twig template conventions. Naming (snake_case),
+      fragments (underscore prefix), variables, and AssetMapper.
+    auto: true
+
   init:
     name: init
     description: >

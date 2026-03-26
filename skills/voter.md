@@ -7,6 +7,12 @@ Generate a security voter for fine-grained access control.
 - Entity name to protect (e.g. `Product`)
 - Permission names (e.g. `view`, `edit`, `delete`) — defaults to `view`, `edit`, `delete` if not specified
 
+## Security Best Practices
+
+- **Single firewall** — use only one firewall in `security.yaml` unless you have two genuinely different authentication systems (e.g. form login for the site + token auth for the API)
+- **Use the `auto` password hasher** — it automatically selects the best algorithm available in your PHP installation. Never hardcode a specific hasher
+- **Use Voters for complex authorization** — never write long expressions inside `#[IsGranted]` or `#[Security]`. Move that logic into a Voter
+
 ## Conventions
 
 - **Location:** `src/Security/Voter/`

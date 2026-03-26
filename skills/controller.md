@@ -10,14 +10,15 @@ Generate a controller following Symfony conventions and best practices.
 
 ## Conventions
 
+- **Extend `AbstractController`** — always. It provides shortcuts for rendering, redirects, security checks, and form handling. Controllers should be thin (no business logic), so this coupling is acceptable
 - **Location:** `src/Controller/`
 - **Namespace:** `App\Controller`
-- **Routing:** Use PHP 8 attributes (`#[Route]`), never annotations or YAML
+- **Use attributes for everything** — routing (`#[Route]`), caching (`#[Cache]`), security (`#[IsGranted]`). Never YAML, never annotations. Configuration belongs where it's used
 - **Class attribute:** Always set a route prefix on the class with `#[Route('/prefix', name: 'prefix_')]`
 - **Method naming:** `index`, `show`, `new`, `edit`, `delete` for CRUD
 - **Route naming:** snake_case, prefixed by entity name (e.g. `product_index`, `product_show`)
-- **Type hints:** Always type-hint `Request`, entities, and return types (`Response`)
-- **Entity resolution:** Use `MapEntity` attribute or route parameter auto-mapping
+- **Dependency injection:** Type-hint services in action method parameters or constructor. Never use `$this->container->get()` — only use the shortcuts provided by `AbstractController` (`$this->render()`, `$this->redirectToRoute()`, etc.)
+- **Entity Value Resolver:** Use route parameter auto-mapping to let Symfony fetch the entity and return 404 automatically. Only query manually via repository when the retrieval logic is complex
 
 ## Template: Standard Controller
 
@@ -29,6 +30,7 @@ namespace App\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 #[Route('/prefix', name: 'prefix_')]
 class PrefixController extends AbstractController
@@ -38,6 +40,15 @@ class PrefixController extends AbstractController
     {
         return $this->render('prefix/index.html.twig');
     }
+}
+
+// Entity Value Resolver example — Symfony fetches the entity automatically:
+#[Route('/{id}', name: 'show', methods: ['GET'])]
+public function show(Product $product): Response
+{
+    // No need to query the repository — $product is resolved from {id}
+    // Returns 404 automatically if not found
+    return $this->render('product/show.html.twig', ['product' => $product]);
 }
 ```
 

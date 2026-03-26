@@ -27,6 +27,8 @@ If no type flag is given, auto-detect:
 - **Methods:** Prefix with `test` (e.g. `testIndex`, `testCreateProduct`) — no `@test` annotation
 - **Assertions:** Use specific assertions (`assertResponseIsSuccessful`, `assertSelectorTextContains`) over generic ones
 - **Data providers:** Use `#[DataProvider('providerName')]` attribute for parameterized tests
+- **Hard-code URLs** — in functional tests, always write the actual URL string (`/product/1`), never generate it from the router. If a route changes, the test must fail so you know a redirect is needed
+- **Smoke test all URLs** — every application should have a functional test that checks all pages load without errors. This is cheap to write and catches severe failures early
 
 ## Template: Functional Test (Controller)
 
@@ -100,6 +102,37 @@ class InvoiceGeneratorTest extends KernelTestCase
         $result = $service->generate($order);
 
         $this->assertInstanceOf(Invoice::class, $result);
+    }
+}
+```
+
+## Template: Smoke Test (recommended for every project)
+
+```php
+<?php
+
+namespace App\Tests;
+
+use PHPUnit\Framework\Attributes\DataProvider;
+use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
+
+class ApplicationAvailabilityFunctionalTest extends WebTestCase
+{
+    #[DataProvider('urlProvider')]
+    public function testPageIsSuccessful(string $url): void
+    {
+        $client = self::createClient();
+        $client->request('GET', $url);
+
+        $this->assertResponseIsSuccessful();
+    }
+
+    public static function urlProvider(): \Generator
+    {
+        yield ['/'];
+        yield ['/product'];
+        yield ['/product/1'];
+        // Add all public URLs here
     }
 }
 ```

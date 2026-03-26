@@ -16,18 +16,27 @@ The goal is not to cover every edge case or every bundle. It's to establish a **
 
 ## Skills
 
+### Background knowledge (applied automatically)
+
 | Skill | What it teaches |
 |---|---|
 | **cli-conventions** | Always prefer `symfony console` over `php bin/console`, detect Symfony CLI availability |
-| **init** | Scaffold projects with `symfony new` and the right flags |
-| **controller** | Routes as attributes, CRUD structure, proper type hints |
-| **entity** | Doctrine mappings, relationships, lifecycle callbacks |
-| **form** | FormType bound to entities, field type mapping, validation on entities |
+| **configuration** | When to use env vars vs parameters vs constants vs secrets, `app.` prefix convention |
+| **templates** | Snake_case naming, underscore-prefixed fragments, AssetMapper over Webpack |
+
+### Code generation (invocable)
+
+| Skill | What it teaches |
+|---|---|
+| **init** | Scaffold projects with `symfony new`, default directory structure, no bundles for app logic |
+| **controller** | Extend `AbstractController`, attributes for routing/security/caching, Entity Value Resolver |
+| **entity** | Attributes for Doctrine mapping, class constants for domain values, validation constraints on entities |
+| **form** | FormType as PHP classes, buttons in templates not form classes, single action for render + process |
 | **command** | `#[AsCommand]`, SymfonyStyle, proper return codes |
-| **service** | `final readonly`, constructor injection, interface binding |
-| **test** | WebTestCase vs KernelTestCase vs TestCase, `#[DataProvider]` |
+| **service** | `final readonly`, autowiring, private services, no bundles, constructor injection |
+| **test** | Smoke testing all URLs, hard-coded URLs, right base class per test type |
 | **migration** | `diff` over `generate`, review before migrate, never edit executed migrations |
-| **voter** | Permission constants, `supports()` + `voteOnAttribute()` pattern |
+| **voter** | Single firewall, `auto` password hasher, Voters over complex `#[IsGranted]` expressions |
 | **event** | `#[AsEventListener]` over subscribers, past-tense naming |
 | **api** | API Platform attributes, serialization groups, filters |
 

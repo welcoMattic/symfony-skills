@@ -9,12 +9,15 @@ Generate a service class following Symfony conventions with autowiring.
 
 ## Conventions
 
+- **Never create bundles for application logic** — don't make `UserBundle`, `ProductBundle`, etc. Bundles are for reusable standalone software. Use PHP namespaces to organize code
+- **Autowiring + autoconfiguration** — rely on them by default. Symfony reads type-hints and injects the right services. Manual `services.yaml` configuration is only needed for edge cases (interface binding, non-standard constructor arguments)
+- **Services are private by default** — never fetch a service via `$container->get()`. Always inject via constructor or method arguments. This is enforced by Symfony's default configuration
 - **Location:** `src/Service/` (or a domain-specific subdirectory if the project uses DDD-style structure)
 - **Injection:** Constructor injection only — never setter injection
 - **Typing:** Always type-hint constructor parameters with interfaces when available (e.g. `LoggerInterface`, `EntityManagerInterface`)
-- **Autowiring:** Symfony autowires by default — no need to configure `services.yaml` unless binding an interface
 - **Final:** Declare classes `final` unless there's a clear need for inheritance
 - **Readonly:** Use `readonly` on the class or constructor-promoted properties when applicable (PHP 8.2+)
+- **Configuration format:** When manual service configuration is needed, use YAML (`config/services.yaml`)
 
 ## Template: Service
 
