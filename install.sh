@@ -43,7 +43,7 @@ Options:
 Examples:
   ./install.sh claude-code                          # Latest version, global
   ./install.sh claude-code --version 6.4            # Symfony 6.4 LTS
-  ./install.sh opencode --version 5.4               # Symfony 5.4
+  ./install.sh opencode --version 6.4               # Symfony 6.4 LTS
   ./install.sh codex --output ~/my-app              # AGENTS.md in project
   ./install.sh cursor --output ~/my-app --version 7.4  # Cursor + Symfony 7.4
 EOF
@@ -54,7 +54,7 @@ EOF
 # Version resolution
 # ─────────────────────────────────────────────────────────────
 
-SUPPORTED_VERSIONS="5.4 6.4 7.4 8.0"
+SUPPORTED_VERSIONS="6.4 7.4 8.0"
 
 validate_version() {
     local ver="$1"

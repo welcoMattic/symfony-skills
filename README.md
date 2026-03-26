@@ -67,15 +67,14 @@ Skills adapt to your Symfony version. By default, the latest stable (8.0) is use
 
 ```bash
 ./install.sh claude-code --version 6.4    # Symfony 6.4 LTS
-./install.sh cursor --output . --version 5.4  # Symfony 5.4
+./install.sh cursor --output . --version 7.4  # Symfony 7.4 LTS
 ```
 
-| Version | Status                  | Key differences                                                                     |
-|---------|-------------------------|-------------------------------------------------------------------------------------|
-| **8.0** | Latest stable (default) | PHP 8.4, attributes, AssetMapper, `readonly class`                                  |
-| **7.4** | LTS                     | PHP 8.2, same practices as 8.0                                                      |
-| **6.4** | LTS                     | PHP 8.1, `readonly` properties only (not class)                                     |
-| **5.4** | Security only           | PHP 7.2+, annotations, Webpack Encore, ParamConverter, `configure()`, no `readonly` |
+| Version | Status                  | Key differences                                 |
+|---------|-------------------------|-------------------------------------------------|
+| **8.0** | Latest stable (default) | PHP 8.4, attributes, AssetMapper, `readonly class` |
+| **7.4** | LTS                     | PHP 8.2, same practices as 8.0                  |
+| **6.4** | LTS                     | PHP 8.1, `readonly` properties only (not class) |
 
 See [docs/](docs/) for detailed per-agent instructions.
 
@@ -83,7 +82,7 @@ See [docs/](docs/) for detailed per-agent instructions.
 
 | Flag              | Description                                                                  |
 |-------------------|------------------------------------------------------------------------------|
-| `--version <X.Y>` | Symfony version: `5.4`, `6.4`, `7.4`, `8.0` (default: latest)                |
+| `--version <X.Y>` | Symfony version: `6.4`, `7.4`, `8.0` (default: latest)                       |
 | `--project`       | Install into the current project instead of globally (Claude Code, OpenCode) |
 | `--output <dir>`  | Output directory for generated files (Codex, Cursor, Windsurf, generic)      |
 | `--dry-run`       | Preview what would be done without making changes                            |
@@ -98,10 +97,6 @@ skills/                     # Source of truth for latest version — pure markdo
   controller.md
   ...
 versions/                   # Version-specific overrides (only files that differ)
-  5.4/
-    controller.md           # Annotations instead of attributes
-    entity.md               # @ORM annotations
-    ...
   6.4/
     service.md              # readonly properties, not class
   7.4/                      # Empty — same as 8.0
@@ -121,6 +116,3 @@ The install script resolves each skill by checking `versions/<X.Y>/<skill>.md` f
 
 All conventions should be traceable to the [official Symfony documentation](https://symfony.com/doc/current/index.html). If a practice isn't in the docs, it probably shouldn't be here.
 
-## License
-
-MIT
