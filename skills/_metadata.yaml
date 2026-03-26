@@ -1,0 +1,88 @@
+## Metadata for each skill — used by install.sh to generate agent-specific formats
+## Fields:
+##   name:        Skill identifier (kebab-case)
+##   description: When/why to use this skill (used for auto-invocation)
+##   args:        Argument hint for user-facing skills
+##   auto:        true = background knowledge, not user-invocable (default: false)
+
+skills:
+  cli-conventions:
+    name: cli-conventions
+    description: >
+      Background knowledge for Symfony CLI conventions. When a Symfony project is detected,
+      always use the Symfony CLI binary as prefix for all relevant commands.
+    auto: true
+
+  init:
+    name: init
+    description: >
+      Initialize a new Symfony project using the Symfony CLI. Supports webapp, API,
+      microservice, and Docker presets.
+    args: "[project-name] [--webapp|--api|--microservice] [--docker] [--php=version]"
+
+  controller:
+    name: controller
+    description: >
+      Create a Symfony controller with routes, actions, and proper structure.
+      Follows Symfony best practices with PHP 8 attributes for routing.
+    args: "[ControllerName] [--crud] [--api]"
+
+  entity:
+    name: entity
+    description: >
+      Create a Doctrine ORM entity with properties, relationships, and repository.
+      Follows Symfony and Doctrine best practices with PHP 8 attributes.
+    args: "[EntityName] [field:type ...] [--api]"
+
+  form:
+    name: form
+    description: >
+      Create a Symfony FormType class for an entity or a standalone form.
+      Handles field types, validation constraints, and form options.
+    args: "[EntityName|FormName]"
+
+  command:
+    name: command
+    description: >
+      Create a Symfony Console command with arguments, options, and proper structure.
+    args: "[command:name] [description]"
+
+  service:
+    name: service
+    description: >
+      Create a Symfony service class with dependency injection, interface, and proper structure.
+    args: "[ServiceName] [--interface]"
+
+  test:
+    name: test
+    description: >
+      Generate PHPUnit tests for Symfony components — unit, functional (WebTestCase),
+      or integration tests. Detects the target class and generates appropriate test type.
+    args: "[ClassName] [--unit|--functional|--integration]"
+
+  migration:
+    name: migration
+    description: >
+      Manage Doctrine migrations — generate, run, diff, rollback.
+      Provides guidance on safe migration practices.
+    args: "[generate|migrate|rollback|status|diff]"
+
+  voter:
+    name: voter
+    description: >
+      Create a Symfony Security Voter for fine-grained authorization logic.
+    args: "[EntityName] [permissions...]"
+
+  event:
+    name: event
+    description: >
+      Create a Symfony Event and its EventListener or EventSubscriber.
+      Use for decoupling application logic via the EventDispatcher.
+    args: "[EventName] [--listener|--subscriber]"
+
+  api:
+    name: api
+    description: >
+      Create or configure an API Platform resource — expose an entity as a REST/GraphQL API
+      with operations, filters, pagination, and serialization groups.
+    args: "[EntityName] [--graphql] [--filters]"
