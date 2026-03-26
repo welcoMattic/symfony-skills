@@ -56,6 +56,7 @@ cd symfony-ai-skills
 |-----------------------------------------------------|------------------------------------|---------------------------------|
 | [Claude Code](https://claude.ai/code)               | `./install.sh claude-code`         | Plugin with `/symfony:*` skills |
 | [OpenCode](https://github.com/opencode-ai/opencode) | `./install.sh opencode`            | Skill with references           |
+| [Vibe](https://github.com/mistralai/mistral-vibe)   | `./install.sh vibe`                | Skill with references           |
 | [Codex](https://github.com/openai/codex)            | `./install.sh codex --output .`    | `AGENTS.md`                     |
 | [Cursor](https://cursor.sh)                         | `./install.sh cursor --output .`   | `.cursorrules`                  |
 | [Windsurf](https://windsurf.com)                    | `./install.sh windsurf --output .` | `.windsurfrules`                |

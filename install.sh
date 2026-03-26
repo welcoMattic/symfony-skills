@@ -31,6 +31,7 @@ Agents:
   codex           Generate AGENTS.md for OpenAI Codex
   cursor          Generate .cursorrules for Cursor
   windsurf        Generate .windsurfrules for Windsurf
+  vibe            Install as Mistral Vibe skill (symlink to ~/.vibe/skills/)
   generic         Generate a single combined markdown file
 
 Options:
@@ -297,6 +298,91 @@ install_opencode() {
 }
 
 # ─────────────────────────────────────────────────────────────
+# Vibe: install as Mistral Vibe CLI skill (SKILL.md + references/)
+# ─────────────────────────────────────────────────────────────
+
+install_vibe() {
+    local target="${1:-$HOME/.vibe/skills/symfony}"
+    local dry_run="${2:-false}"
+
+    echo -e "${BLUE}Installing for Mistral Vibe$(version_label)...${NC}"
+
+    if [[ "$dry_run" == "true" ]]; then
+        echo -e "  Would create skill at: ${BOLD}$target${NC}"
+        echo "  Would create SKILL.md + references/*.md"
+        return
+    fi
+
+    local build_dir="$SCRIPT_DIR/dist/vibe"
+    rm -rf "$build_dir"
+    mkdir -p "$build_dir/references"
+
+    # Build the main SKILL.md
+    {
+        echo "---"
+        echo "name: symfony"
+        echo "description: Skills for Symfony PHP framework development — project scaffolding, Doctrine entities, controllers, forms, services, tests, and more."
+        echo "---"
+        echo ""
+        echo "# Symfony Development Skills"
+        echo ""
+        echo "Comprehensive knowledge base for Symfony PHP framework development."
+        echo ""
+
+        # Include background knowledge inline
+        for skill in $(list_skills); do
+            local auto
+            auto=$(read_meta "$skill" "auto")
+            if [[ "$auto" == "true" ]]; then
+                echo ""
+                cat "$(resolve_skill "$skill")" | tail -n +3
+                echo ""
+            fi
+        done
+
+        # Reference table for invocable skills
+        echo "## Skill References"
+        echo ""
+        echo "| Skill | Description | Reference |"
+        echo "|-------|-------------|-----------|"
+        for skill in $(list_skills); do
+            local auto
+            auto=$(read_meta "$skill" "auto")
+            if [[ "$auto" == "true" ]]; then continue; fi
+            local description
+            description=$(read_meta "$skill" "description")
+            echo "| $skill | $description | [${skill}](references/${skill}.md) |"
+        done
+    } > "$build_dir/SKILL.md"
+
+    echo -e "  ${GREEN}+${NC} SKILL.md (main)"
+
+    # Copy each invocable skill as a reference file
+    for skill in $(list_skills); do
+        local auto
+        auto=$(read_meta "$skill" "auto")
+        if [[ "$auto" == "true" ]]; then continue; fi
+        cp "$(resolve_skill "$skill")" "$build_dir/references/$skill.md"
+        echo -e "  ${GREEN}+${NC} references/$skill.md"
+    done
+
+    # Create symlink
+    if [[ -L "$target" ]]; then
+        rm "$target"
+    elif [[ -d "$target" ]]; then
+        echo -e "  ${YELLOW}Warning: $target already exists. Backing up to ${target}.bak${NC}"
+        mv "$target" "${target}.bak"
+    fi
+
+    mkdir -p "$(dirname "$target")"
+    ln -s "$build_dir" "$target"
+
+    echo ""
+    echo -e "${GREEN}Done!${NC} Skill installed at $target → $build_dir"
+    echo "Restart Vibe to use the symfony skill."
+}
+
+# ─────────────────────────────────────────────────────────────
 # Codex: generate AGENTS.md
 # ─────────────────────────────────────────────────────────────
 
@@ -446,7 +532,7 @@ DRY_RUN=false
 
 while [[ $# -gt 0 ]]; do
     case $1 in
-        claude-code|opencode|codex|cursor|windsurf|generic)
+        claude-code|opencode|vibe|codex|cursor|windsurf|generic)
             AGENT="$1"; shift ;;
         --version)
             SYMFONY_VERSION="$2"
@@ -485,6 +571,13 @@ case "$AGENT" in
             install_opencode "./.opencode/skills/symfony" "$DRY_RUN"
         else
             install_opencode "$HOME/.agents/skills/symfony" "$DRY_RUN"
+        fi
+        ;;
+    vibe)
+        if $PROJECT; then
+            install_vibe "./.vibe/skills/symfony" "$DRY_RUN"
+        else
+            install_vibe "$HOME/.vibe/skills/symfony" "$DRY_RUN"
         fi
         ;;
     codex)
