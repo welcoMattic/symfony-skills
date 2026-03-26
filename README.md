@@ -45,8 +45,8 @@ The goal is not to cover every edge case or every bundle. It's to establish a **
 The skill content is **pure markdown** — agent-agnostic. An install script generates the native format for your agent of choice.
 
 ```bash
-git clone https://github.com/your-username/symfony-ai-skills.git
-cd symfony-ai-skills
+git clone https://github.com/welcoMattic/symfony-skills.git
+cd symfony-skills
 ./install.sh <agent>
 ```
 

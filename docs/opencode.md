@@ -37,7 +37,7 @@ The symfony skill is automatically available in OpenCode. When working on a Symf
 ## Updating
 
 ```bash
-cd /path/to/symfony-ai-skills
+cd /path/to/symfony-skills
 git pull
 ./install.sh opencode
 ```

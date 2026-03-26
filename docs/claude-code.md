@@ -19,7 +19,7 @@ Then add the plugin to your `~/.claude/settings.json`:
 ```json
 {
   "enabledPlugins": {
-    "/Users/<your-username>/.claude/skills/symfony": true
+    "/Users/<you>/.claude/skills/symfony": true
   }
 }
 ```
@@ -28,7 +28,7 @@ Then add the plugin to your `~/.claude/settings.json`:
 
 ```bash
 cd /path/to/your/symfony-project
-/path/to/symfony-ai-skills/install.sh claude-code --project
+/path/to/symfony-skills/install.sh claude-code --project
 ```
 
 This creates `.claude/skills/symfony/` in your project. No settings.json change needed — project-level plugins are auto-discovered.
@@ -56,7 +56,7 @@ The `cli-conventions` skill is **not user-invocable** — it runs as background 
 ## Updating
 
 ```bash
-cd /path/to/symfony-ai-skills
+cd /path/to/symfony-skills
 git pull
 ./install.sh claude-code
 ```
